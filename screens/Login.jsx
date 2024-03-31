@@ -5,19 +5,31 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../redux/action";
 
 const Login = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  const { error } = useSelector((state) => state.auth);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const loginHandler = () => {
-    console.log("Login");
+    dispatch(login(email, password));
   };
+
+  useEffect(() => {
+    if (error) {
+      alert(error);
+      dispatch({ type: "clearError" });
+    }
+  }, [dispatch, error, alert]);
 
   return (
     <View

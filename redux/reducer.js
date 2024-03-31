@@ -40,3 +40,25 @@ export const authReducer = createReducer(
     },
   }
 );
+
+export const taskReducer = createReducer(
+  {},
+  {
+    addTaskRequest: (state) => {
+      state.loading = true;
+    },
+    addTaskSuccess: (state, action) => {
+      (state.loading = false), (state.message = action.payload);
+    },
+    addTaskFail: (state, action) => {
+      (state.loading = false), (state.error = action.payload);
+    },
+
+    clearError: (state) => {
+      state.error = null;
+    },
+    clearMessage: (state) => {
+      state.message = null;
+    },
+  }
+);

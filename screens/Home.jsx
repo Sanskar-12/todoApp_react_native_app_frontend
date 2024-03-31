@@ -9,38 +9,43 @@ import {
   TextInput,
   ScrollView,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Task from "../components/Task";
 import Icon from "react-native-vector-icons/Entypo";
 import { Dialog, Button } from "react-native-paper";
+import { useSelector, useDispatch } from "react-redux";
+import { addTask, getMyProfile } from "../redux/action";
 
 const Home = ({ navigation }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
+  const { user } = useSelector((state) => state.auth);
+
+  const { loading, message, error } = useSelector((state) => state.task);
+  const dispatch = useDispatch();
+
   const handleDialog = () => {
     setOpenDialog((prev) => !prev);
   };
 
-  const addTaskHandler = () => {
-    console.log("task added");
+  const addTaskHandler = async () => {
+    await dispatch(addTask(title, description));
+    dispatch(getMyProfile());
+    handleDialog();
   };
 
-  const tasks = [
-    {
-      title: "Task 1",
-      description: "Sample Task 1",
-      completed: false,
-      _id: "sdfsdfsdfsdf",
-    },
-    {
-      title: "Task 2",
-      description: "Sample Task 2",
-      completed: true,
-      _id: "sdfsdsdfsdfsdfsdf",
-    },
-  ];
+  useEffect(() => {
+    if (error) {
+      alert(error);
+      dispatch({ type: "clearError" });
+    }
+    if (message) {
+      alert(message);
+      dispatch({ type: "clearMessage" });
+    }
+  }, [error, message, dispatch, alert]);
 
   return (
     <>
@@ -54,7 +59,7 @@ const Home = ({ navigation }) => {
         <ScrollView>
           <SafeAreaView>
             <Text style={styles.heading}>All Tasks</Text>
-            {tasks.map((task) => (
+            {user?.tasks?.map((task) => (
               <Task
                 key={task._id}
                 title={task.title}

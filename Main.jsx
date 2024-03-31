@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Home from "./screens/Home";
@@ -7,13 +7,30 @@ import Footer from "./components/Footer";
 import Profile from "./screens/Profile";
 import Register from "./screens/Register";
 import CameraComponent from "./screens/CameraComponent";
+import { useSelector, useDispatch } from "react-redux";
+import { getMyProfile } from "./redux/action";
+import Loading from "./components/Loading";
 
 const Stack = createNativeStackNavigator();
 
 const Main = () => {
-  return (
+  const dispatch = useDispatch();
+  const { isAuthenticated, loading } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    dispatch(getMyProfile());
+  }, [dispatch]);
+
+  return loading ? (
+    <Loading />
+  ) : (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator initialRouteName={isAuthenticated ? "home" : "login"}>
+        <Stack.Screen
+          name="home"
+          component={Home}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name="login"
           component={Login}
@@ -26,11 +43,6 @@ const Main = () => {
         />
 
         <Stack.Screen
-          name="home"
-          component={Home}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
           name="profile"
           component={Profile}
           options={{ headerShown: false }}
@@ -41,7 +53,7 @@ const Main = () => {
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
-      <Footer />
+      {isAuthenticated && <Footer />}
     </NavigationContainer>
   );
 };

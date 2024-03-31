@@ -36,3 +36,24 @@ export const getMyProfile = () => async (dispatch) => {
     dispatch({ type: "loadUserFail", payload: error.response.data.message });
   }
 };
+
+export const addTask = (title, description) => async (dispatch) => {
+  try {
+    dispatch({ type: "addTaskRequest" });
+
+    const { data } = await axios.post(
+      `${server}/api/v1/add`,
+      { title, description },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      }
+    );
+
+    dispatch({ type: "addTaskSuccess", payload: data.message });
+  } catch (error) {
+    dispatch({ type: "addTaskFail", payload: error.response.data.message });
+  }
+};
