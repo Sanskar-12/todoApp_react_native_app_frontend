@@ -15,7 +15,9 @@ const Login = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const { error } = useSelector((state) => state.auth);
+  const { loading, error, isAuthenticated } = useSelector(
+    (state) => state.auth
+  );
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -57,7 +59,7 @@ const Login = () => {
         />
       </View>
       <Button
-        disabled={!email || !password}
+        disabled={!email || !password || loading}
         style={styles.btn}
         onPress={loginHandler}
       >
@@ -80,6 +82,10 @@ const Login = () => {
         >
           SIGN UP
         </Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => navigation.navigate("forgotpassword")}>
+        <Text>Forgot Password</Text>
       </TouchableOpacity>
     </View>
   );

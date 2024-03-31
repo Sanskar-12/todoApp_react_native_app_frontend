@@ -4,7 +4,7 @@ import { CameraType, Camera } from "expo-camera";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import * as ImagePicker from "expo-image-picker";
 
-const CameraComponent = ({ navigation }) => {
+const CameraComponent = ({ navigation, route }) => {
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(CameraType.back);
   const [camera, setCamera] = useState(null);
@@ -31,13 +31,21 @@ const CameraComponent = ({ navigation }) => {
       quality: 1,
     });
 
-    navigation.navigate("register", { image: data.uri });
+    if (route.params.updateProfile) {
+      return navigation.navigate("profile", { image: data.uri });
+    } else {
+      return navigation.navigate("register", { image: data.uri });
+    }
   };
 
   const clickPicture = async () => {
     const data = await camera.takePictureAsync();
 
-    return navigation.navigate("register", { image: data?.uri });
+    if (route.params.updateProfile) {
+      return navigation.navigate("profile", { image: data.uri });
+    } else {
+      return navigation.navigate("register", { image: data.uri });
+    }
   };
 
   if (hasPermission === null) {

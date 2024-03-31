@@ -98,7 +98,11 @@ const Home = ({ navigation }) => {
             <TouchableOpacity onPress={handleDialog}>
               <Text>CANCEL</Text>
             </TouchableOpacity>
-            <Button textColor="#900" onPress={addTaskHandler}>
+            <Button
+              textColor="#900"
+              onPress={addTaskHandler}
+              disabled={!title || !description || loading}
+            >
               ADD
             </Button>
           </View>
