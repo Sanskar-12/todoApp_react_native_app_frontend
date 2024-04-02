@@ -196,3 +196,49 @@ export const verifyUser = (otp) => async (dispatch) => {
     });
   }
 };
+
+export const forgotPassword = (email) => async (dispatch) => {
+  try {
+    dispatch({ type: "forgotPasswordRequest" });
+
+    const { data } = await axios.post(
+      `${server}/api/v1/forgetpassword`,
+      { email },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    dispatch({ type: "forgotPasswordSuccess", payload: data.message });
+  } catch (error) {
+    dispatch({
+      type: "forgotPasswordFail",
+      payload: error.response.data.message,
+    });
+  }
+};
+
+export const resetPassword = (otp, newPassword) => async (dispatch) => {
+  try {
+    dispatch({ type: "resetPasswordRequest" });
+
+    const { data } = await axios.post(
+      `${server}/api/v1/resetpassword`,
+      { otp, newPassword },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    dispatch({ type: "resetPasswordSuccess", payload: data.message });
+  } catch (error) {
+    dispatch({
+      type: "resetPasswordFail",
+      payload: error.response.data.message,
+    });
+  }
+};

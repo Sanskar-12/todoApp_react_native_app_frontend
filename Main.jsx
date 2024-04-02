@@ -12,6 +12,8 @@ import { getMyProfile } from "./redux/action";
 import Loading from "./components/Loading";
 import ChangePassword from "./screens/ChangePassword";
 import Verify from "./screens/Verify";
+import ForgotPassword from "./screens/ForgotPassword";
+import ResetPassword from "./screens/ResetPassword";
 
 const Stack = createNativeStackNavigator();
 
@@ -62,6 +64,16 @@ const Main = () => {
         <Stack.Screen
           name="otpverification"
           component={Verify}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="forgotpassword"
+          component={ForgotPassword}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="resetpassword"
+          component={ResetPassword}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
