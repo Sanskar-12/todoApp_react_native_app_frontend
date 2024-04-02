@@ -18,6 +18,21 @@ export const authReducer = createReducer(
       state.error = action.payload;
     },
 
+    registerRequest: (state) => {
+      state.loading = true;
+    },
+    registerSuccess: (state, action) => {
+      state.loading = false;
+      state.isAuthenticated = true;
+      state.user = action.payload.user;
+      state.message = action.payload.message;
+    },
+    registerFail: (state, action) => {
+      state.loading = false;
+      state.isAuthenticated = false;
+      state.error = action.payload;
+    },
+
     loadUserRequest: (state) => {
       state.loading = true;
     },
@@ -44,6 +59,16 @@ export const authReducer = createReducer(
       state.loading = false;
       state.isAuthenticated = true;
       state.error = action.payload;
+    },
+
+    verifyOtpRequest: (state) => {
+      state.loading = true;
+    },
+    verifyOtpSuccess: (state, action) => {
+      (state.loading = false), (state.message = action.payload);
+    },
+    verifyOtpFail: (state, action) => {
+      (state.loading = false), (state.error = action.payload);
     },
 
     clearError: (state) => {

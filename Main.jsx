@@ -10,6 +10,8 @@ import CameraComponent from "./screens/CameraComponent";
 import { useSelector, useDispatch } from "react-redux";
 import { getMyProfile } from "./redux/action";
 import Loading from "./components/Loading";
+import ChangePassword from "./screens/ChangePassword";
+import Verify from "./screens/Verify";
 
 const Stack = createNativeStackNavigator();
 
@@ -50,6 +52,16 @@ const Main = () => {
         <Stack.Screen
           name="camera"
           component={CameraComponent}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="changepassword"
+          component={ChangePassword}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="otpverification"
+          component={Verify}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

@@ -10,10 +10,11 @@ import { Avatar, Button } from "react-native-paper";
 import { useSelector, useDispatch } from "react-redux";
 import { getMyProfile, logoutUser, updateProfile } from "../redux/action";
 import mime from "mime";
+import Loading from "../components/Loading";
 
 const Profile = ({ navigation, route }) => {
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
+  const { user, loading } = useSelector((state) => state.auth);
   const { message, error } = useSelector((state) => state.update);
 
   const [name, setName] = useState(user.name);
@@ -61,7 +62,9 @@ const Profile = ({ navigation, route }) => {
     }
   }, [dispatch, error, message]);
 
-  return (
+  return loading ? (
+    <Loading />
+  ) : (
     <View
       style={{
         flex: 1,
@@ -100,6 +103,12 @@ const Profile = ({ navigation, route }) => {
       <Button textColor="rgb(50,50,50)" onPress={logoutHandler}>
         <Text>LOGOUT</Text>
       </Button>
+
+      {user.verified ? null : (
+        <Button onPress={() => navigation.navigate("otpverification")}>
+          <Text>Verify</Text>
+        </Button>
+      )}
     </View>
   );
 };
